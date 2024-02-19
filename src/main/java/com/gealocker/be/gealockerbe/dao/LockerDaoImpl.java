@@ -21,6 +21,8 @@ import org.springframework.jdbc.core.RowMapper;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.SimpleMailMessage;
 
 @Transactional
 @Repository
@@ -29,6 +31,9 @@ public class LockerDaoImpl implements LockerDao {
     @Autowired
     @Qualifier("postgres")
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private JavaMailSender emailSender;
 
     @Override
     public ApiResponse rent(Locker locker) {
@@ -419,6 +424,14 @@ public class LockerDaoImpl implements LockerDao {
         }
 
         return response;
+    }
+
+    public void sendSimpleMessage(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        emailSender.send(message);
     }
 
 }
