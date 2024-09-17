@@ -32,8 +32,6 @@ public class LockerDaoImpl implements LockerDao {
     @Qualifier("postgres")
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private JavaMailSender emailSender;
 
     @Override
     public ApiResponse rent(Locker locker) {
@@ -431,7 +429,7 @@ public class LockerDaoImpl implements LockerDao {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
-        emailSender.send(message);
+
     }
 
 }
